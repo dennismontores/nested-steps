@@ -39,8 +39,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #87ceeb;
-  border: 1px dashed #4682b4;
+  background: red;
+  border: 1px dashed red;
   border-radius: 5px;
 }
 .nestable-item-icon {

@@ -181,11 +181,11 @@ var Nestable = /*#__PURE__*/function (_Component) {
       var elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
 
       if (!_this.elCopyStyles) {
-        var offset = (0, _utils.getOffsetRect)(_this.el); // const scroll = getTotalScroll(this.el);
-
+        var offset = (0, _utils.getOffsetRect)(_this.el);
+        var scroll = (0, _utils.getTotalScroll)(_this.el);
         _this.elCopyStyles = _objectSpread({
-          marginTop: offset.top - clientY,
-          marginLeft: offset.left - clientX
+          marginTop: offset.top - clientY - scroll.top,
+          marginLeft: offset.left - clientX - scroll.left
         }, transformProps);
       } else {
         _this.elCopyStyles = _objectSpread(_objectSpread({}, _this.elCopyStyles), transformProps);

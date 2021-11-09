@@ -79,9 +79,9 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "collapse", function (itemIds) {
       var _this$props = _this.props,
-          idProp = _this$props.idProp,
-          childrenProp = _this$props.childrenProp,
-          collapsed = _this$props.collapsed;
+        idProp = _this$props.idProp,
+        childrenProp = _this$props.childrenProp,
+        collapsed = _this$props.collapsed;
       var items = _this.state.items;
 
       if (itemIds === 'NONE') {
@@ -137,8 +137,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "isCollapsed", function (item) {
       var _this$props2 = _this.props,
-          collapsed = _this$props2.collapsed,
-          idProp = _this$props2.idProp;
+        collapsed = _this$props2.collapsed,
+        idProp = _this$props2.idProp;
       var collapsedGroups = _this.state.collapsedGroups;
       return !!(collapsedGroups.indexOf(item[idProp]) > -1 ^ collapsed);
     });
@@ -172,20 +172,20 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onMouseMove", function (e) {
       var _this$props3 = _this.props,
-          group = _this$props3.group,
-          threshold = _this$props3.threshold;
+        group = _this$props3.group,
+        threshold = _this$props3.threshold;
       var dragItem = _this.state.dragItem;
       var clientX = e.clientX,
-          clientY = e.clientY;
+        clientY = e.clientY;
       var transformProps = (0, _utils.getTransformProps)(clientX, clientY);
       var elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
 
       if (!_this.elCopyStyles) {
         var offset = (0, _utils.getOffsetRect)(_this.el);
-        var scroll = (0, _utils.getTotalScroll)(_this.el);
+        // var scroll = (0, _utils.getTotalScroll)(_this.el);
         _this.elCopyStyles = _objectSpread({
-          marginTop: offset.top - clientY - scroll.top,
-          marginLeft: offset.left - clientX - scroll.left
+          marginTop: offset.top - clientY,
+          marginLeft: offset.left - clientX,
         }, transformProps);
       } else {
         _this.elCopyStyles = _objectSpread(_objectSpread({}, _this.elCopyStyles), transformProps);
@@ -225,9 +225,9 @@ var Nestable = /*#__PURE__*/function (_Component) {
       }
 
       var _this$props4 = _this.props,
-          collapsed = _this$props4.collapsed,
-          idProp = _this$props4.idProp,
-          childrenProp = _this$props4.childrenProp;
+        collapsed = _this$props4.collapsed,
+        idProp = _this$props4.idProp,
+        childrenProp = _this$props4.childrenProp;
       var dragItem = _this.state.dragItem;
       if (dragItem[idProp] === item[idProp]) return;
 
@@ -257,8 +257,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onToggleCollapse", function (item, isGetter) {
       var _this$props5 = _this.props,
-          collapsed = _this$props5.collapsed,
-          idProp = _this$props5.idProp;
+        collapsed = _this$props5.collapsed,
+        idProp = _this$props5.idProp;
       var collapsedGroups = _this.state.collapsedGroups;
 
       var isCollapsed = _this.isCollapsed(item);
@@ -308,8 +308,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this$props6 = this.props,
-          items = _this$props6.items,
-          childrenProp = _this$props6.childrenProp; // make sure every item has property 'children'
+        items = _this$props6.items,
+        childrenProp = _this$props6.childrenProp; // make sure every item has property 'children'
 
       items = (0, _utils.listWithChildren)(items, childrenProp);
       this.setState({
@@ -320,8 +320,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       var _this$props7 = this.props,
-          itemsNew = _this$props7.items,
-          childrenProp = _this$props7.childrenProp;
+        itemsNew = _this$props7.items,
+        childrenProp = _this$props7.childrenProp;
       var isPropsUpdated = (0, _reactAddonsShallowCompare["default"])({
         props: prevProps,
         state: {}
@@ -354,12 +354,12 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "moveItem",
     value: function moveItem(_ref) {
       var dragItem = _ref.dragItem,
-          pathFrom = _ref.pathFrom,
-          pathTo = _ref.pathTo;
+        pathFrom = _ref.pathFrom,
+        pathTo = _ref.pathTo;
       var extraProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var _this$props8 = this.props,
-          childrenProp = _this$props8.childrenProp,
-          confirmChange = _this$props8.confirmChange;
+        childrenProp = _this$props8.childrenProp,
+        confirmChange = _this$props8.confirmChange;
       var dragItemSize = this.getItemDepth(dragItem);
       var items = this.state.items; // the remove action might affect the next position,
       // so update next coordinates accordingly
@@ -393,10 +393,10 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "tryIncreaseDepth",
     value: function tryIncreaseDepth(dragItem) {
       var _this$props9 = this.props,
-          maxDepth = _this$props9.maxDepth,
-          idProp = _this$props9.idProp,
-          childrenProp = _this$props9.childrenProp,
-          collapsed = _this$props9.collapsed;
+        maxDepth = _this$props9.maxDepth,
+        idProp = _this$props9.idProp,
+        childrenProp = _this$props9.childrenProp,
+        collapsed = _this$props9.collapsed;
       var pathFrom = this.getPathById(dragItem[idProp]);
       var itemIndex = pathFrom[pathFrom.length - 1];
       var newDepth = pathFrom.length + this.getItemDepth(dragItem); // has previous sibling and isn't at max depth
@@ -427,9 +427,9 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "tryDecreaseDepth",
     value: function tryDecreaseDepth(dragItem) {
       var _this$props10 = this.props,
-          idProp = _this$props10.idProp,
-          childrenProp = _this$props10.childrenProp,
-          collapsed = _this$props10.collapsed;
+        idProp = _this$props10.idProp,
+        childrenProp = _this$props10.childrenProp,
+        collapsed = _this$props10.collapsed;
       var pathFrom = this.getPathById(dragItem[idProp]);
       var itemIndex = pathFrom[pathFrom.length - 1]; // has parent
 
@@ -460,12 +460,12 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "dragApply",
     value: function dragApply() {
       var _this$props11 = this.props,
-          onChange = _this$props11.onChange,
-          idProp = _this$props11.idProp;
+        onChange = _this$props11.onChange,
+        idProp = _this$props11.idProp;
       var _this$state = this.state,
-          items = _this$state.items,
-          isDirty = _this$state.isDirty,
-          dragItem = _this$state.dragItem;
+        items = _this$state.items,
+        isDirty = _this$state.isDirty,
+        dragItem = _this$state.dragItem;
       this.setState({
         itemsOld: null,
         dragItem: null,
@@ -502,8 +502,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
       var items = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.items;
       var _this$props12 = this.props,
-          idProp = _this$props12.idProp,
-          childrenProp = _this$props12.childrenProp;
+        idProp = _this$props12.idProp,
+        childrenProp = _this$props12.childrenProp;
       var path = [];
       items.every(function (item, i) {
         if (item[idProp] === id) {
@@ -556,8 +556,8 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "getRealNextPath",
     value: function getRealNextPath(prevPath, nextPath, dragItemSize) {
       var _this$props13 = this.props,
-          childrenProp = _this$props13.childrenProp,
-          maxDepth = _this$props13.maxDepth;
+        childrenProp = _this$props13.childrenProp,
+        maxDepth = _this$props13.maxDepth;
       var ppLastIndex = prevPath.length - 1;
       var npLastIndex = nextPath.length - 1;
       var newDepth = nextPath.length + dragItemSize - 1;
@@ -603,11 +603,11 @@ var Nestable = /*#__PURE__*/function (_Component) {
     key: "getItemOptions",
     value: function getItemOptions() {
       var _this$props14 = this.props,
-          renderItem = _this$props14.renderItem,
-          renderCollapseIcon = _this$props14.renderCollapseIcon,
-          handler = _this$props14.handler,
-          idProp = _this$props14.idProp,
-          childrenProp = _this$props14.childrenProp;
+        renderItem = _this$props14.renderItem,
+        renderCollapseIcon = _this$props14.renderCollapseIcon,
+        handler = _this$props14.handler,
+        idProp = _this$props14.idProp,
+        childrenProp = _this$props14.childrenProp;
       var dragItem = this.state.dragItem;
       return {
         dragItem: dragItem,
@@ -627,43 +627,43 @@ var Nestable = /*#__PURE__*/function (_Component) {
     value: // ––––––––––––––––––––––––––––––––––––
     // Render methods
     // ––––––––––––––––––––––––––––––––––––
-    function renderDragLayer() {
-      var _this$props15 = this.props,
+      function renderDragLayer() {
+        var _this$props15 = this.props,
           group = _this$props15.group,
           idProp = _this$props15.idProp;
-      var dragItem = this.state.dragItem;
-      var el = document.querySelector('.nestable-' + group + ' .nestable-item-' + dragItem[idProp]);
-      var listStyles = {};
+        var dragItem = this.state.dragItem;
+        var el = document.querySelector('.nestable-' + group + ' .nestable-item-' + dragItem[idProp]);
+        var listStyles = {};
 
-      if (el) {
-        listStyles.width = el.clientWidth;
+        if (el) {
+          listStyles.width = el.clientWidth;
+        }
+
+        if (this.elCopyStyles) {
+          listStyles = _objectSpread(_objectSpread({}, listStyles), this.elCopyStyles);
+        }
+
+        var options = this.getItemOptions();
+        return /*#__PURE__*/_react["default"].createElement("div", {
+          className: "nestable-drag-layer"
+        }, /*#__PURE__*/_react["default"].createElement("ol", {
+          className: "nestable-list",
+          style: listStyles
+        }, /*#__PURE__*/_react["default"].createElement(_NestableItem["default"], {
+          item: dragItem,
+          options: options,
+          isCopy: true
+        })));
       }
-
-      if (this.elCopyStyles) {
-        listStyles = _objectSpread(_objectSpread({}, listStyles), this.elCopyStyles);
-      }
-
-      var options = this.getItemOptions();
-      return /*#__PURE__*/_react["default"].createElement("div", {
-        className: "nestable-drag-layer"
-      }, /*#__PURE__*/_react["default"].createElement("ol", {
-        className: "nestable-list",
-        style: listStyles
-      }, /*#__PURE__*/_react["default"].createElement(_NestableItem["default"], {
-        item: dragItem,
-        options: options,
-        isCopy: true
-      })));
-    }
   }, {
     key: "render",
     value: function render() {
       var _this$props16 = this.props,
-          group = _this$props16.group,
-          className = _this$props16.className;
+        group = _this$props16.group,
+        className = _this$props16.className;
       var _this$state2 = this.state,
-          items = _this$state2.items,
-          dragItem = _this$state2.dragItem;
+        items = _this$state2.items,
+        dragItem = _this$state2.dragItem;
       var options = this.getItemOptions();
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(className, 'nestable', 'nestable-' + group, {

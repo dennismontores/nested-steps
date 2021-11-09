@@ -374,10 +374,10 @@ class Nestable extends Component {
         const target = this.getItemByPath(nextPath);
 
         if (
-            newDepth < maxDepth &&
-            target[childrenProp] &&
-            target[childrenProp].length &&
-            !this.isCollapsed(target)
+          newDepth < maxDepth &&
+          target[childrenProp] &&
+          target[childrenProp].length &&
+          !this.isCollapsed(target)
         ) {
           return nextPath
             .slice(0, -1)
@@ -462,11 +462,11 @@ class Nestable extends Component {
 
     if (!this.elCopyStyles) {
       const offset = getOffsetRect(this.el);
-      const scroll = getTotalScroll(this.el);
+      // const scroll = getTotalScroll(this.el);
 
       this.elCopyStyles = {
-        marginTop: offset.top - clientY - scroll.top,
-        marginLeft: offset.left - clientX - scroll.left,
+        marginTop: offset.top - clientY,
+        marginLeft: offset.left - clientX,
         ...transformProps
       };
 

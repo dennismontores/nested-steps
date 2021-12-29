@@ -185,7 +185,7 @@ var Nestable = /*#__PURE__*/function (_Component) {
 
         _this.elCopyStyles = _objectSpread({
           marginTop: offset.top - clientY,
-          marginLeft: offset.left
+          marginLeft: offset.left - clientX
         }, transformProps);
       } else {
         _this.elCopyStyles = _objectSpread(_objectSpread({}, _this.elCopyStyles), transformProps);

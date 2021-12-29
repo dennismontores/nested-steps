@@ -466,7 +466,7 @@ class Nestable extends Component {
 
       this.elCopyStyles = {
         marginTop: offset.top - clientY,
-        marginLeft: offset.left,
+        marginLeft: offset.left - clientX,
         ...transformProps,
       };
     } else {

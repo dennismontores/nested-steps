@@ -179,7 +179,6 @@ var Nestable = /*#__PURE__*/function (_Component) {
           clientY = e.clientY;
       var transformProps = (0, _utils.getTransformProps)(clientX, clientY);
       var elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
-      console.log(transformProps);
 
       if (!_this.elCopyStyles) {
         var offset = (0, _utils.getOffsetRect)(_this.el); // const scroll = getTotalScroll(this.el);

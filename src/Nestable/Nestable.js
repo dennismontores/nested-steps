@@ -8,7 +8,6 @@ import {
   isArray,
   closest,
   getOffsetRect,
-  getTotalScroll,
   getTransformProps,
   listWithChildren,
   getAllNonEmptyNodesIds,
@@ -72,9 +71,13 @@ class Nestable extends Component {
     this.setState({ items });
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const { items: itemsNew, childrenProp } = this.props;
-    const isPropsUpdated = shallowCompare({ props: prevProps, state: {} }, this.props, {});
+    const isPropsUpdated = shallowCompare(
+      { props: prevProps, state: {} },
+      this.props,
+      {}
+    );
 
     if (isPropsUpdated) {
       this.stopTrackMouse();
@@ -89,7 +92,7 @@ class Nestable extends Component {
         items: listWithChildren(itemsNew, childrenProp),
         dragItem: null,
         isDirty: false,
-        ...extra
+        ...extra,
       });
     }
   }
@@ -108,21 +111,21 @@ class Nestable extends Component {
     if (itemIds === 'NONE') {
       this.setState({
         collapsedGroups: collapsed
-          ? getAllNonEmptyNodesIds(items, {idProp, childrenProp})
-          : []
+          ? getAllNonEmptyNodesIds(items, { idProp, childrenProp })
+          : [],
       });
-
     } else if (itemIds === 'ALL') {
       this.setState({
         collapsedGroups: collapsed
           ? []
-          : getAllNonEmptyNodesIds(items, {idProp, childrenProp})
+          : getAllNonEmptyNodesIds(items, { idProp, childrenProp }),
       });
-
     } else if (isArray(itemIds)) {
       this.setState({
-        collapsedGroups: getAllNonEmptyNodesIds(items, {idProp, childrenProp})
-          .filter(id => (itemIds.indexOf(id) > -1) ^ collapsed)
+        collapsedGroups: getAllNonEmptyNodesIds(items, {
+          idProp,
+          childrenProp,
+        }).filter((id) => (itemIds.indexOf(id) > -1) ^ collapsed),
       });
     }
   };
@@ -155,11 +158,10 @@ class Nestable extends Component {
     if (realPathTo.length === 0) return;
 
     // user can validate every movement
-    const destinationPath = realPathTo.length > pathTo.length
-      ? pathTo
-      : pathTo.slice(0, -1);
+    const destinationPath =
+      realPathTo.length > pathTo.length ? pathTo : pathTo.slice(0, -1);
     const destinationParent = this.getItemByPath(destinationPath);
-    if (!confirmChange({dragItem, destinationParent})) return;
+    if (!confirmChange({ dragItem, destinationParent })) return;
 
     const removePath = this.getSplicePath(pathFrom, {
       numToRemove: 1,
@@ -178,7 +180,7 @@ class Nestable extends Component {
     this.setState({
       items,
       isDirty: true,
-      ...extraProps
+      ...extraProps,
     });
   }
 
@@ -190,7 +192,9 @@ class Nestable extends Component {
 
     // has previous sibling and isn't at max depth
     if (itemIndex > 0 && newDepth <= maxDepth) {
-      const prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
+      const prevSibling = this.getItemByPath(
+        pathFrom.slice(0, -1).concat(itemIndex - 1)
+      );
 
       // previous sibling is not collapsed
       if (!prevSibling[childrenProp].length || !this.isCollapsed(prevSibling)) {
@@ -250,8 +254,8 @@ class Nestable extends Component {
     });
 
     if (onChange && isDirty) {
-      const targetPath = this.getPathById(dragItem[idProp], items)
-      onChange({items, dragItem, targetPath});
+      const targetPath = this.getPathById(dragItem[idProp], items);
+      onChange({ items, dragItem, targetPath });
     }
   }
 
@@ -294,7 +298,7 @@ class Nestable extends Component {
     const { childrenProp } = this.props;
     let item = null;
 
-    path.forEach(index => {
+    path.forEach((index) => {
       const list = item ? item[childrenProp] : items;
       item = list[index];
     });
@@ -346,14 +350,16 @@ class Nestable extends Component {
 
       // if new depth exceeds max, try to put after item instead of into item
       if (newDepth > maxDepth && nextPath.length) {
-        return this.getRealNextPath(prevPath, nextPath.slice(0, -1), dragItemSize);
+        return this.getRealNextPath(
+          prevPath,
+          nextPath.slice(0, -1),
+          dragItemSize
+        );
       }
 
       return nextPath.map((nextIndex, i) => {
         if (wasShifted) {
-          return i === npLastIndex
-            ? nextIndex + 1
-            : nextIndex;
+          return i === npLastIndex ? nextIndex + 1 : nextIndex;
         }
 
         if (typeof prevPath[i] !== 'number') {
@@ -367,7 +373,6 @@ class Nestable extends Component {
 
         return nextIndex;
       });
-
     } else if (prevPath.length === nextPath.length) {
       // if move bottom + move to item with children --> make it a first child instead of swap
       if (nextPath[npLastIndex] > prevPath[npLastIndex]) {
@@ -391,13 +396,8 @@ class Nestable extends Component {
   }
 
   getItemOptions() {
-    const {
-      renderItem,
-      renderCollapseIcon,
-      handler,
-      idProp,
-      childrenProp,
-    } = this.props;
+    const { renderItem, renderCollapseIcon, handler, idProp, childrenProp } =
+      this.props;
     const { dragItem } = this.state;
 
     return {
@@ -438,7 +438,7 @@ class Nestable extends Component {
 
     this.setState({
       dragItem: item,
-      itemsOld: this.state.items
+      itemsOld: this.state.items,
     });
   };
 
@@ -448,9 +448,7 @@ class Nestable extends Component {
     this.stopTrackMouse();
     this.el = null;
 
-    isCancel
-      ? this.dragRevert()
-      : this.dragApply();
+    isCancel ? this.dragRevert() : this.dragApply();
   };
 
   onMouseMove = (e) => {
@@ -458,7 +456,9 @@ class Nestable extends Component {
     const { dragItem } = this.state;
     const { clientX, clientY } = e;
     const transformProps = getTransformProps(clientX, clientY);
-    const elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
+    const elCopy = document.querySelector(
+      '.nestable-' + group + ' .nestable-drag-layer > .nestable-list'
+    );
 
     if (!this.elCopyStyles) {
       const offset = getOffsetRect(this.el);
@@ -466,14 +466,13 @@ class Nestable extends Component {
 
       this.elCopyStyles = {
         marginTop: offset.top - clientY,
-        marginLeft: offset.left - clientX,
-        ...transformProps
+        marginLeft: offset.left,
+        ...transformProps,
       };
-
     } else {
       this.elCopyStyles = {
         ...this.elCopyStyles,
-        ...transformProps
+        ...transformProps,
       };
       for (let key in transformProps) {
         if (transformProps.hasOwnProperty(key)) {
@@ -537,9 +536,10 @@ class Nestable extends Component {
     const isCollapsed = this.isCollapsed(item);
 
     const newState = {
-      collapsedGroups: (isCollapsed ^ collapsed)
-        ? collapsedGroups.filter(id => id !== item[idProp])
-        : collapsedGroups.concat(item[idProp])
+      collapsedGroups:
+        isCollapsed ^ collapsed
+          ? collapsedGroups.filter((id) => id !== item[idProp])
+          : collapsedGroups.concat(item[idProp]),
     };
 
     if (isGetter) {
@@ -562,7 +562,9 @@ class Nestable extends Component {
   renderDragLayer() {
     const { group, idProp } = this.props;
     const { dragItem } = this.state;
-    const el = document.querySelector('.nestable-' + group + ' .nestable-item-' + dragItem[idProp]);
+    const el = document.querySelector(
+      '.nestable-' + group + ' .nestable-item-' + dragItem[idProp]
+    );
 
     let listStyles = {};
     if (el) {
@@ -571,20 +573,16 @@ class Nestable extends Component {
     if (this.elCopyStyles) {
       listStyles = {
         ...listStyles,
-        ...this.elCopyStyles
+        ...this.elCopyStyles,
       };
     }
 
     const options = this.getItemOptions();
 
     return (
-      <div className="nestable-drag-layer">
-        <ol className="nestable-list" style={listStyles}>
-          <NestableItem
-            item={dragItem}
-            options={options}
-            isCopy
-          />
+      <div className='nestable-drag-layer'>
+        <ol className='nestable-list' style={listStyles}>
+          <NestableItem item={dragItem} options={options} isCopy />
         </ol>
       </div>
     );
@@ -596,16 +594,14 @@ class Nestable extends Component {
     const options = this.getItemOptions();
 
     return (
-      <div className={cx(className, 'nestable', 'nestable-' + group, { 'is-drag-active': dragItem })}>
-        <ol className="nestable-list nestable-group">
+      <div
+        className={cx(className, 'nestable', 'nestable-' + group, {
+          'is-drag-active': dragItem,
+        })}>
+        <ol className='nestable-list nestable-group'>
           {items.map((item, i) => {
             return (
-              <NestableItem
-                key={i}
-                index={i}
-                item={item}
-                options={options}
-              />
+              <NestableItem key={i} index={i} item={item} options={options} />
             );
           })}
         </ol>
